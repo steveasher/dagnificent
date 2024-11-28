@@ -1,6 +1,8 @@
+import dagnificent.{
+  type Edge, type Node, type NodeId, Edge, EdgeRelation, Node, NodeId,
+}
 import gleam/int
 import gleam/list
-import graph.{type Edge, type Graph, type Node, type NodeId, Edge, Node, NodeId}
 import qcheck.{type Generator, map, tuple2}
 
 // Generator for NodeId
@@ -19,9 +21,9 @@ pub fn node_gen() -> Generator(Node(Int)) {
 }
 
 // Generator for Edge
-pub fn edge_gen(nodes: List(Node(Int))) -> Generator(Edge) {
+pub fn edge_gen(nodes: List(Node(Int))) -> Generator(Edge(String)) {
   map(tuple2(one_of(nodes), one_of(nodes)), fn(pair) {
     let #(from, to) = pair
-    Edge(from: from.id, to: to.id)
+    Edge(EdgeRelation("->"), from: from.id, to: to.id)
   })
 }

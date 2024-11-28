@@ -1,4 +1,4 @@
-import dag.{
+import dagnificent.{
   type Edge, type EdgeRelation, type Graph, type Node, type NodeId, type Session,
   Edge, EdgeRelation, Node, NodeId, add_edge, add_node, create_session,
   empty_session, get_dag, has_cycle, promote_to_dag, promote_to_graph,
