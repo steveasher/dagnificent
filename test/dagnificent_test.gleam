@@ -1,8 +1,7 @@
 import dagnificent.{
-  type Edge, type EdgeRelation, type Graph, type Node, type NodeId, type Session,
-  Edge, EdgeRelation, Node, NodeId, add_edge, add_node, create_session,
-  empty_session, get_dag, has_cycle, promote_to_dag, promote_to_graph,
-  update_node_data,
+  type Edge, type EdgeRelation, type Node, type NodeId, type Session, Edge,
+  EdgeRelation, Node, NodeId, add_edge, add_node, create_session, empty_session,
+  get_dag, has_cycle, promote_to_dag, promote_to_graph, update_node_data,
 }
 import gleam/int
 import gleam/list
@@ -138,7 +137,7 @@ pub fn update_node_data_test() {
 
 pub fn has_cycle_empty_graph_test() {
   let assert Ok(graph) = promote_to_graph([], [])
-  let assert Ok(dag) = promote_to_dag(graph)
+  let assert Ok(_dag) = promote_to_dag(graph)
   should.equal(has_cycle(graph), False)
 }
 
