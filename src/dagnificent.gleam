@@ -1,5 +1,4 @@
 import gleam/dict.{type Dict}
-import gleam/int
 import gleam/io
 import gleam/list
 import gleam/option.{type Option}
@@ -21,10 +20,6 @@ pub type EdgeRelation(a) {
 pub type Edge(a) {
   Edge(relation: EdgeRelation(a), from: NodeId, to: NodeId)
 }
-
-// pub opaque type Graph(a, b) {
-//   Graph(nodes: List(Node(a)), edges: List(Edge(b)))
-// }
 
 type AdjList(b) =
   Dict(NodeId, List(#(NodeId, EdgeRelation(b))))
@@ -181,17 +176,6 @@ pub fn add_edge(
       }
     }
   }
-  // let DAG(graph) = session.dag
-  // let result = update_handler(Event("add_edge", edge))
-  // case result {
-  //   Error(err) -> Error(err)
-  //   Ok(_) ->
-  //     Ok(
-  //       restore_session(
-  //         DAG(Graph(nodes: graph.nodes, edges: [edge, ..graph.edges])),
-  //       ),
-  //     )
-  // }
 }
 
 // TODO: why is this using map? Every node should have a unique id.
