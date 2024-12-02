@@ -40,12 +40,15 @@ pub type WriteOperation(a, b) {
   DeleteEdge(Edge(b))
 }
 
-fn upsert_node(graph: Graph(a, b), node: Node(a)) -> Result(Graph(a, b), String) {
+pub fn upsert_node(
+  graph: Graph(a, b),
+  node: Node(a),
+) -> Result(Graph(a, b), String) {
   let new_nodes = dict.insert(graph.nodes, node.id, node.data)
   Ok(Graph(nodes: new_nodes, adj_list: graph.adj_list))
 }
 
-fn delete_node(
+pub fn delete_node(
   graph: Graph(a, b),
   node_id: NodeId,
 ) -> Result(Graph(a, b), String) {
@@ -67,7 +70,10 @@ fn delete_node(
   }
 }
 
-fn upsert_edge(graph: Graph(a, b), edge: Edge(b)) -> Result(Graph(a, b), String) {
+pub fn upsert_edge(
+  graph: Graph(a, b),
+  edge: Edge(b),
+) -> Result(Graph(a, b), String) {
   use <- bool.guard(
     when: bool.or(
       !dict.has_key(graph.nodes, edge.from),
@@ -85,7 +91,10 @@ fn upsert_edge(graph: Graph(a, b), edge: Edge(b)) -> Result(Graph(a, b), String)
   Ok(Graph(nodes: graph.nodes, adj_list: new_adj_list))
 }
 
-fn delete_edge(graph: Graph(a, b), edge: Edge(b)) -> Result(Graph(a, b), String) {
+pub fn delete_edge(
+  graph: Graph(a, b),
+  edge: Edge(b),
+) -> Result(Graph(a, b), String) {
   // Check if the adjacency list contains edges from the given node
   case dict.get(graph.adj_list, edge.from) {
     // If there are no edges from the given node, return the original graph
@@ -125,7 +134,6 @@ pub fn apply_update(
   result: Graph(a, b),
   operation: WriteOperation(a, b),
 ) -> Result(Graph(a, b), String) {
-  string.inspect(result)
   apply_write_operation(Ok(result), operation)
 }
 

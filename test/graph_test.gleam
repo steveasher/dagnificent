@@ -1,31 +1,15 @@
 import gleam/dict
-import gleam/int
-import gleam/io
 import gleam/list
-import gleam/result
-import gleam/string
 import gleeunit
 import gleeunit/should
 import graph.{
-  type Edge, type Node, type WriteOperation, DeleteEdge, DeleteNode, Edge,
-  EdgeRelation, Node, NodeId, UpsertEdge, UpsertNode, apply_update,
-  atomic_update, get_raw_data, new,
+  type Node, DeleteEdge, DeleteNode, EdgeRelation, Node, NodeId, UpsertEdge,
+  UpsertNode, apply_update, atomic_update, get_raw_data, new,
 }
+import test_util.{a_node, an_edge}
 
 pub fn main() {
   gleeunit.main()
-}
-
-fn a_node(data: Int) -> Node(Int) {
-  Node(id: NodeId(int.to_string(data)), data: data)
-}
-
-fn an_edge(from: Int, to: Int) -> Edge(String) {
-  Edge(
-    relation: graph.EdgeRelation("->"),
-    from: NodeId(int.to_string(from)),
-    to: NodeId(int.to_string(to)),
-  )
 }
 
 pub fn create_node_test() {
