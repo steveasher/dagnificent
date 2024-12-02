@@ -1,9 +1,7 @@
 import gleam/bool
 import gleam/dict.{type Dict}
-import gleam/io
 import gleam/list
-import gleam/option.{type Option}
-import gleam/result
+import gleam/option
 import gleam/string
 
 pub type NodeId {
@@ -31,13 +29,6 @@ pub opaque type Graph(a, b) {
 
 pub type RawData(a, b) {
   RawData(nodes: Dict(NodeId, a), adj_list: AdjList(b))
-}
-
-pub type WriteOperation(a, b) {
-  UpsertNode(Node(a))
-  DeleteNode(NodeId)
-  UpsertEdge(Edge(b))
-  DeleteEdge(Edge(b))
 }
 
 pub fn upsert_node(
@@ -121,37 +112,6 @@ pub fn delete_edge(
 
 pub fn new() -> Graph(a, b) {
   Graph(nodes: dict.new(), adj_list: dict.new())
-}
-
-pub fn atomic_update(
-  graph: Graph(a, b),
-  operations: List(WriteOperation(a, b)),
-) -> Result(Graph(a, b), String) {
-  list.fold(operations, Ok(graph), apply_write_operation)
-}
-
-pub fn apply_update(
-  result: Graph(a, b),
-  operation: WriteOperation(a, b),
-) -> Result(Graph(a, b), String) {
-  apply_write_operation(Ok(result), operation)
-}
-
-fn apply_write_operation(
-  result: Result(Graph(a, b), String),
-  operation: WriteOperation(a, b),
-) -> Result(Graph(a, b), String) {
-  case result {
-    Error(_) -> result
-    Ok(graph) -> {
-      case operation {
-        UpsertNode(node) -> upsert_node(graph, node)
-        DeleteNode(node_id) -> delete_node(graph, node_id)
-        UpsertEdge(edge) -> upsert_edge(graph, edge)
-        DeleteEdge(edge) -> delete_edge(graph, edge)
-      }
-    }
-  }
 }
 
 pub fn get_raw_data(graph: Graph(a, b)) -> RawData(a, b) {
