@@ -8,41 +8,41 @@ pub type NodeId {
   NodeId(String)
 }
 
-pub type Node(a) {
-  Node(id: NodeId, data: a)
+pub type Node(data) {
+  Node(id: NodeId, data: data)
 }
 
-pub type EdgeRelation(c) {
-  EdgeRelation(c)
+pub type EdgeRelation(relation) {
+  EdgeRelation(relation)
 }
 
-pub type Edge(c) {
-  Edge(relation: EdgeRelation(c), from: NodeId, to: NodeId)
+pub type Edge(relation) {
+  Edge(relation: EdgeRelation(relation), from: NodeId, to: NodeId)
 }
 
-type AdjList(b) =
-  Dict(NodeId, List(#(NodeId, EdgeRelation(b))))
+type AdjList(relation) =
+  Dict(NodeId, List(#(NodeId, EdgeRelation(relation))))
 
-pub opaque type Graph(a, b) {
-  Graph(nodes: Dict(NodeId, a), adj_list: AdjList(b))
+pub opaque type Graph(data, relation) {
+  Graph(nodes: Dict(NodeId, data), adj_list: AdjList(relation))
 }
 
-pub type RawData(a, b) {
-  RawData(nodes: Dict(NodeId, a), adj_list: AdjList(b))
+pub type RawData(data, relation) {
+  RawData(nodes: Dict(NodeId, data), adj_list: AdjList(relation))
 }
 
 pub fn upsert_node(
-  graph: Graph(a, b),
-  node: Node(a),
-) -> Result(Graph(a, b), String) {
+  graph: Graph(data, relation),
+  node: Node(data),
+) -> Result(Graph(data, relation), String) {
   let new_nodes = dict.insert(graph.nodes, node.id, node.data)
   Ok(Graph(nodes: new_nodes, adj_list: graph.adj_list))
 }
 
 pub fn delete_node(
-  graph: Graph(a, b),
+  graph: Graph(data, relation),
   node_id: NodeId,
-) -> Result(Graph(a, b), String) {
+) -> Result(Graph(data, relation), String) {
   // Check if the adjacency list contains edges from the given node
   case dict.get(graph.adj_list, node_id) {
     // If there are no edges from the given node, remove the node from the graph
@@ -62,9 +62,9 @@ pub fn delete_node(
 }
 
 pub fn upsert_edge(
-  graph: Graph(a, b),
-  edge: Edge(b),
-) -> Result(Graph(a, b), String) {
+  graph: Graph(data, relation),
+  edge: Edge(relation),
+) -> Result(Graph(data, relation), String) {
   use <- bool.guard(
     when: bool.or(
       !dict.has_key(graph.nodes, edge.from),
@@ -83,9 +83,9 @@ pub fn upsert_edge(
 }
 
 pub fn delete_edge(
-  graph: Graph(a, b),
-  edge: Edge(b),
-) -> Result(Graph(a, b), String) {
+  graph: Graph(data, relation),
+  edge: Edge(relation),
+) -> Result(Graph(data, relation), String) {
   // Check if the adjacency list contains edges from the given node
   case dict.get(graph.adj_list, edge.from) {
     // If there are no edges from the given node, return the original graph
@@ -110,10 +110,10 @@ pub fn delete_edge(
   }
 }
 
-pub fn new() -> Graph(a, b) {
+pub fn new() -> Graph(data, relation) {
   Graph(nodes: dict.new(), adj_list: dict.new())
 }
 
-pub fn get_raw_data(graph: Graph(a, b)) -> RawData(a, b) {
+pub fn get_raw_data(graph: Graph(data, relation)) -> RawData(data, relation) {
   RawData(nodes: graph.nodes, adj_list: graph.adj_list)
 }
