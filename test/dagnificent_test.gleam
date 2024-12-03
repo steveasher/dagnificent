@@ -1,8 +1,8 @@
 import dagnificent.{get_raw_data, new} as dag
+import dagnificent/graph.{NodeId}
 import gleam/dict
 import gleeunit
 import gleeunit/should
-import graph.{NodeId}
 
 import test_util.{a_node, an_edge}
 

@@ -1,11 +1,11 @@
+import dagnificent/graph.{
+  type Node, EdgeRelation, Node, NodeId, delete_edge, delete_node, get_raw_data,
+  new, upsert_edge, upsert_node,
+}
 import gleam/dict
 import gleam/list
 import gleeunit
 import gleeunit/should
-import graph.{
-  type Node, EdgeRelation, Node, NodeId, delete_edge, delete_node, get_raw_data,
-  new, upsert_edge, upsert_node,
-}
 import test_util.{a_node, an_edge}
 
 pub fn main() {

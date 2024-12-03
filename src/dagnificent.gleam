@@ -1,7 +1,7 @@
+import dagnificent/graph
 import gleam/dict.{type Dict}
 import gleam/list
 import gleam/result
-import graph
 
 pub opaque type DAG(a, b) {
   DAG(graph.Graph(a, b))
